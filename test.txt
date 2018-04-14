@@ -1,0 +1,14 @@
+import  os, json, sys, requests
+ 
+url = 'http://192.168.10.128/jenkins/job/sonaqube-job'
+hookData = json.loads(os.environ['payload'])
+branch = hookData['pull_request']['head']['ref'];
+prId = hookData['pull_request']['number'];
+componentName = hookData['repository']['name'];
+ 
+if action == 'closed' or action == 'synchronize' or action == 'assigned' : 
+  sys.exit(0)
+ 
+repository = hookData['repository']['full_name']
+url = url + '/buildWithParameters?branch=' + branch + '&pr=' + str(prId) + '&repository=' + repository + '&componentName=' + componentName
+response = requests.post(url)
